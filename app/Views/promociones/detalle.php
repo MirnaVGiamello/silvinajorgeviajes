@@ -5,7 +5,7 @@
 
   <div class="detalle-hero mb-4">
     <?php if (!empty($promocion['imagen_portada'])): ?>
-      <img src="<?= base_url($promocion['imagen_portada']) ?>" alt="<?= esc($promocion['titulo']) ?>">
+      <img src="<?= base_url($promocion['imagen_portada']) ?>" alt="<?= esc($promocion['titulo']) ?>" class="img-ampliable" role="button">
     <?php else: ?>
       <i class="bi bi-airplane"></i>
     <?php endif ?>
@@ -21,7 +21,7 @@
       <?php if (!empty($imagenes)): ?>
         <div class="galeria-mini">
           <?php foreach ($imagenes as $img): ?>
-            <img src="<?= base_url($img['ruta']) ?>" alt="Foto de <?= esc($promocion['titulo']) ?>">
+            <img src="<?= base_url($img['ruta']) ?>" alt="Foto de <?= esc($promocion['titulo']) ?>" class="img-ampliable" role="button">
           <?php endforeach ?>
         </div>
       <?php endif ?>
@@ -59,5 +59,25 @@
     </div>
   </div>
 </section>
+
+<div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-transparent border-0">
+      <button type="button" class="btn-close btn-close-white ms-auto m-2" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      <img src="" alt="" id="lightboxImg" class="w-100" style="object-fit:contain;max-height:85vh">
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.img-ampliable').forEach(function (img) {
+  img.addEventListener('click', function () {
+    var lightboxImg = document.getElementById('lightboxImg');
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    new bootstrap.Modal(document.getElementById('lightboxModal')).show();
+  });
+});
+</script>
 
 <?php $content = ob_get_clean(); echo view('layout', ['title' => $promocion['titulo'], 'config' => $config, 'content' => $content, 'ocultarWhatsappFlotante' => true]); ?>

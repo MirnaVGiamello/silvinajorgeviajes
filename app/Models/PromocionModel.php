@@ -7,7 +7,7 @@ class PromocionModel extends Model
     protected $table         = 'promociones';
     protected $allowedFields = [
         'titulo', 'destino', 'categoria', 'descripcion', 'precio', 'moneda',
-        'fecha_desde', 'fecha_hasta', 'imagen_portada', 'activa', 'usuario_id',
+        'fecha_desde', 'fecha_hasta', 'imagen_portada', 'activa', 'orden', 'usuario_id',
     ];
     protected $useTimestamps = true;
 
@@ -18,12 +18,12 @@ class PromocionModel extends Model
         if (!empty($filtros['destino']))   $builder->like('destino', $filtros['destino']);
         if (!empty($filtros['categoria'])) $builder->where('categoria', $filtros['categoria']);
 
-        return $builder->orderBy('created_at', 'DESC')->findAll();
+        return $builder->orderBy('orden', 'ASC')->orderBy('created_at', 'DESC')->findAll();
     }
 
     public function destacadas(int $cantidad = 3): array
     {
-        return $this->where('activa', 1)->orderBy('created_at', 'DESC')->findAll($cantidad);
+        return $this->where('activa', 1)->orderBy('orden', 'ASC')->orderBy('created_at', 'DESC')->findAll($cantidad);
     }
 
     public function categorias(): array

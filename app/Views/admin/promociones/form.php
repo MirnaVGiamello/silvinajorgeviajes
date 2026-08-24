@@ -46,6 +46,12 @@
           <textarea name="descripcion" class="form-control" rows="4"><?= esc($promocion['descripcion'] ?? '') ?></textarea>
         </div>
 
+        <div class="col-6 col-md-2">
+          <label class="form-label small mb-1">Orden</label>
+          <input type="number" name="orden" class="form-control" value="<?= esc($promocion['orden'] ?? 0) ?>">
+          <div class="form-text">Las de menor número aparecen primero (para destacarlas).</div>
+        </div>
+
         <div class="col-12">
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" name="activa" id="activa" value="1" <?= (!$promocion || $promocion['activa']) ? 'checked' : '' ?>>

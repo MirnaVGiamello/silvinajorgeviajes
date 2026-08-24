@@ -88,6 +88,8 @@ img{max-width:100%}
 .detalle-hero img{width:100%;height:100%;object-fit:cover}
 .galeria-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.6rem;margin-top:1rem}
 .galeria-mini img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.img-ampliable{cursor:zoom-in;transition:opacity .2s}
+.img-ampliable:hover{opacity:.85}
 
 .btn-whatsapp-consultar{
   display:flex;align-items:center;justify-content:center;

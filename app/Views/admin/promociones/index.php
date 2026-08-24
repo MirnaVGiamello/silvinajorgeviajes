@@ -8,12 +8,13 @@
   <div class="table-responsive">
     <table class="table table-hover mb-0 small align-middle">
       <thead class="table-light">
-        <tr><th>ID</th><th>Título</th><th>Destino</th><th>Categoría</th><th class="text-end">Precio</th><th class="text-center">Estado</th><th></th></tr>
+        <tr><th>ID</th><th class="text-center">Orden</th><th>Título</th><th>Destino</th><th>Categoría</th><th class="text-end">Precio</th><th class="text-center">Estado</th><th></th></tr>
       </thead>
       <tbody>
         <?php foreach ($promociones as $p): ?>
         <tr>
           <td><?= $p['id'] ?></td>
+          <td class="text-center"><?= (int) $p['orden'] ?></td>
           <td><?= esc($p['titulo']) ?></td>
           <td><?= esc($p['destino']) ?></td>
           <td><?= esc($p['categoria']) ?></td>

@@ -37,7 +37,7 @@ class Promociones extends BaseController
         return view('admin/promociones/index', [
             'title'       => 'Promociones',
             'config'      => $this->config,
-            'promociones' => $model->orderBy('created_at', 'DESC')->findAll(),
+            'promociones' => $model->orderBy('orden', 'ASC')->orderBy('created_at', 'DESC')->findAll(),
         ]);
     }
 
@@ -78,6 +78,7 @@ class Promociones extends BaseController
             'fecha_desde' => $this->request->getPost('fecha_desde') ?: null,
             'fecha_hasta' => $this->request->getPost('fecha_hasta') ?: null,
             'activa'      => $this->request->getPost('activa') ? 1 : 0,
+            'orden'       => (int) ($this->request->getPost('orden') ?: 0),
         ];
     }
 

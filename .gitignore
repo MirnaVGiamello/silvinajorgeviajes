@@ -47,8 +47,9 @@ $RECYCLE.BIN/
 Vagrantfile
 
 #-------------------------
-# Artefactos de despliegue (no son codigo fuente)
+# Artefactos de despliegue (no son codigo fuente, pueden contener credenciales reales)
 #-------------------------
+/deploy/
 viajes-produccion.zip
 viajes-produccion.sql
 
