@@ -9,18 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Sacramento&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="<?= base_url('assets/css/site.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/site.css') ?>?v=<?= @filemtime(FCPATH . 'assets/css/site.css') ?: time() ?>">
 <link rel="icon" type="image/png" href="<?= base_url('assets/img/logoSilvina.png') ?>">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="container d-flex align-items-center justify-content-between py-3">
-    <a href="<?= site_url('/') ?>" class="brand">
-      <span class="brand-agencia">Silvina Jorge</span>
-      <span class="brand-viajes">Viajes</span>
-    </a>
-
+  <div class="container d-flex align-items-center justify-content-end py-3">
     <button class="btn btn-nav-toggle d-lg-none" id="btnNav" aria-label="Menú">
       <i class="bi bi-list fs-2"></i>
     </button>

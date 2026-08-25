@@ -7,7 +7,7 @@ class PromocionModel extends Model
     protected $table         = 'promociones';
     protected $allowedFields = [
         'titulo', 'destino', 'categoria', 'descripcion', 'precio', 'moneda',
-        'fecha_desde', 'fecha_hasta', 'imagen_portada', 'activa', 'orden', 'usuario_id',
+        'fecha_desde', 'fecha_hasta', 'imagen_portada', 'destacado_foto', 'activa', 'orden', 'usuario_id',
     ];
     protected $useTimestamps = true;
 

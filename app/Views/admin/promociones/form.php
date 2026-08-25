@@ -68,8 +68,12 @@
       <?php if (!empty($promocion['imagen_portada'])): ?>
         <div class="mb-2"><img src="<?= base_url($promocion['imagen_portada']) ?>" style="max-width:180px;border-radius:10px" alt="Portada actual"></div>
       <?php endif ?>
-      <input type="file" name="imagen_portada" class="form-control" accept="image/*">
-      <div class="form-text">Se muestra en las tarjetas de promoción y en el detalle. Dejá vacío para no cambiarla.</div>
+      <input type="file" name="imagen_portada" class="form-control" accept="image/*" data-comprimir>
+      <div class="form-text">Se muestra en las tarjetas de promoción y en el detalle. Usá una foto horizontal (apaisada, ej. 16:9) para que se vea completa y sin recortes. Dejá vacío para no cambiarla.</div>
+
+      <label class="form-label small mb-1 mt-3">Destacado en la foto</label>
+      <input type="text" name="destacado_foto" class="form-control" maxlength="50" placeholder="Ej: 2x1, Últimos lugares, USD 500" value="<?= esc($promocion['destacado_foto'] ?? '') ?>">
+      <div class="form-text">Texto que aparece en la placa sobre la foto de portada. Si lo dejás vacío, se muestra el precio.</div>
     </div>
   </div>
 
@@ -91,7 +95,7 @@
           <?php endforeach ?>
         </div>
       <?php endif ?>
-      <input type="file" name="galeria[]" class="form-control" accept="image/*" multiple>
+      <input type="file" name="galeria[]" class="form-control" accept="image/*" multiple data-comprimir>
       <div class="form-text">Podés seleccionar varias fotos a la vez para agregarlas a la galería.</div>
     </div>
   </div>
@@ -102,5 +106,74 @@
     <a href="<?= site_url('admin/promociones') ?>" class="btn btn-outline-secondary">Cancelar</a>
   </div>
 </form>
+
+<script>
+(function () {
+  var form = document.querySelector('form[enctype="multipart/form-data"]');
+  var inputs = form ? form.querySelectorAll('input[type="file"][data-comprimir]') : [];
+  if (!form || !inputs.length) return;
+
+  var ANCHO_MAXIMO = 1600;
+  var CALIDAD = 0.82;
+  var MIN_PARA_COMPRIMIR = 400 * 1024; // no vale la pena tocar fotos ya livianas
+
+  function comprimir(archivo) {
+    return new Promise(function (resolve) {
+      if (!archivo.type.startsWith('image/') || archivo.size < MIN_PARA_COMPRIMIR) {
+        resolve(archivo);
+        return;
+      }
+      var img = new Image();
+      var url = URL.createObjectURL(archivo);
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var ancho = img.width, alto = img.height;
+        if (ancho > ANCHO_MAXIMO) {
+          alto = Math.round(alto * ANCHO_MAXIMO / ancho);
+          ancho = ANCHO_MAXIMO;
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = ancho;
+        canvas.height = alto;
+        canvas.getContext('2d').drawImage(img, 0, 0, ancho, alto);
+        canvas.toBlob(function (blob) {
+          if (!blob) { resolve(archivo); return; }
+          var nombre = archivo.name.replace(/\.[^.]+$/, '') + '.jpg';
+          resolve(new File([blob], nombre, { type: 'image/jpeg' }));
+        }, 'image/jpeg', CALIDAD);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(archivo); };
+      img.src = url;
+    });
+  }
+
+  form.addEventListener('submit', function (ev) {
+    if (form.dataset.comprimido === '1') return;
+    ev.preventDefault();
+
+    var boton = form.querySelector('.btn-brand');
+    var textoOriginal = boton ? boton.innerHTML : '';
+    if (boton) { boton.disabled = true; boton.innerHTML = 'Optimizando fotos...'; }
+
+    var tareas = Array.from(inputs).map(function (input) {
+      if (!input.files.length) return Promise.resolve();
+      return Promise.all(Array.from(input.files).map(comprimir)).then(function (archivos) {
+        var dt = new DataTransfer();
+        archivos.forEach(function (a) { dt.items.add(a); });
+        input.files = dt.files;
+      });
+    });
+
+    Promise.all(tareas).then(function () {
+      form.dataset.comprimido = '1';
+      form.submit();
+    }).catch(function () {
+      // si algo falla, se envia igual con las fotos originales
+      form.dataset.comprimido = '1';
+      form.submit();
+    });
+  });
+})();
+</script>
 
 <?php $content = ob_get_clean(); echo view('admin/layout', ['title' => $promocion ? 'Editar promoción' : 'Nueva promoción', 'content' => $content]); ?>

@@ -27,7 +27,30 @@ class Promociones extends BaseController
         $nombre = $nombreBase . '_' . uniqid() . '.' . $archivo->getExtension();
         $archivo->move($dir, $nombre);
 
+        $this->optimizarImagen($dir . '/' . $nombre);
+
         return 'uploads/promociones/' . $promocionId . '/' . $nombre;
+    }
+
+    /**
+     * Las fotos de celular/stock suelen pesar varios MB; sin esto, cada
+     * apertura del formulario de edicion y cada guardado se hacen muy lentos.
+     */
+    private function optimizarImagen(string $ruta, int $anchoMaximo = 1600): void
+    {
+        $info = @getimagesize($ruta);
+        if (!$info || $info[0] <= $anchoMaximo) {
+            return;
+        }
+
+        try {
+            service('image')
+                ->withFile($ruta)
+                ->resize($anchoMaximo, (int) round($info[1] * $anchoMaximo / $info[0]), true, 'width')
+                ->save($ruta, 82);
+        } catch (\Throwable $e) {
+            log_message('error', 'No se pudo optimizar la imagen {ruta}: {msg}', ['ruta' => $ruta, 'msg' => $e->getMessage()]);
+        }
     }
 
     public function index()
@@ -69,16 +92,17 @@ class Promociones extends BaseController
     private function datosFormulario(): array
     {
         return [
-            'titulo'      => $this->request->getPost('titulo'),
-            'destino'     => $this->request->getPost('destino'),
-            'categoria'   => $this->request->getPost('categoria'),
-            'descripcion' => $this->request->getPost('descripcion'),
-            'precio'      => $this->request->getPost('precio') !== '' ? $this->request->getPost('precio') : null,
-            'moneda'      => $this->request->getPost('moneda') ?: 'ARS',
-            'fecha_desde' => $this->request->getPost('fecha_desde') ?: null,
-            'fecha_hasta' => $this->request->getPost('fecha_hasta') ?: null,
-            'activa'      => $this->request->getPost('activa') ? 1 : 0,
-            'orden'       => (int) ($this->request->getPost('orden') ?: 0),
+            'titulo'         => $this->request->getPost('titulo'),
+            'destino'        => $this->request->getPost('destino'),
+            'categoria'      => $this->request->getPost('categoria'),
+            'descripcion'    => $this->request->getPost('descripcion'),
+            'precio'         => $this->request->getPost('precio') !== '' ? $this->request->getPost('precio') : null,
+            'moneda'         => $this->request->getPost('moneda') ?: 'ARS',
+            'fecha_desde'    => $this->request->getPost('fecha_desde') ?: null,
+            'fecha_hasta'    => $this->request->getPost('fecha_hasta') ?: null,
+            'destacado_foto' => $this->request->getPost('destacado_foto') ?: null,
+            'activa'         => $this->request->getPost('activa') ? 1 : 0,
+            'orden'          => (int) ($this->request->getPost('orden') ?: 0),
         ];
     }
 

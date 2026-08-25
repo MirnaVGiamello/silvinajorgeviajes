@@ -38,7 +38,12 @@ img{max-width:100%}
 .mobile-nav a{padding:.85rem 1.25rem;font-weight:600;color:var(--ink-soft);border-bottom:1px solid rgba(46,74,82,.06)}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;padding:4.5rem 0 5rem;overflow:hidden}
+.hero{
+  position:relative;padding:4.5rem 0 5rem;overflow:hidden;
+  background:
+    linear-gradient(100deg, rgba(248,244,236,.96) 0%, rgba(248,244,236,.86) 45%, rgba(248,244,236,.72) 100%),
+    url('../img/hero-bg.webp') center/cover no-repeat;
+}
 .hero::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(circle at 50% 20%, rgba(201,168,118,.18), transparent 60%);
@@ -47,8 +52,7 @@ img{max-width:100%}
 .hero-logo{height:220px;width:220px;border-radius:50%;object-fit:cover;box-shadow:0 8px 24px rgba(46,74,82,.15)}
 .hero-eslogan{font-family:'Playfair Display',serif;font-style:italic;color:var(--ink);font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
 .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);margin-bottom:1rem}
-.hero-intro{font-family:'Montserrat',sans-serif;font-weight:400;font-size:.5em;color:var(--ink-soft);display:inline-block;vertical-align:middle}
-.hero-script{font-family:'Sacramento',cursive;font-size:1.4em;color:var(--lilac)}
+.hero-script{font-family:'Sacramento',cursive;font-size:1.2em;color:var(--lilac)}
 .hero p.lead{color:var(--ink-soft);max-width:560px;margin-bottom:2rem}
 
 @media(max-width:991px){
@@ -68,8 +72,13 @@ img{max-width:100%}
 /* ---------- Promo cards ---------- */
 .promo-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(46,74,82,.08);transition:transform .2s,box-shadow .2s;height:100%;display:flex;flex-direction:column}
 .promo-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(46,74,82,.14)}
-.promo-card .promo-img{aspect-ratio:4/3;background:linear-gradient(135deg,var(--lilac-soft),var(--cream));display:flex;align-items:center;justify-content:center;color:var(--lilac);font-size:2.5rem;overflow:hidden}
+.promo-card .promo-img{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,var(--lilac-soft),var(--cream));display:flex;align-items:center;justify-content:center;color:var(--lilac);font-size:2.5rem;overflow:hidden}
 .promo-card .promo-img img{width:100%;height:100%;object-fit:cover}
+.promo-precio-badge{
+  position:absolute;top:.75rem;right:.75rem;
+  background:var(--ink);color:#fff;font-weight:700;font-size:.9rem;
+  padding:.35rem .75rem;border-radius:50px;box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
 .promo-card .promo-body{padding:1.25rem;display:flex;flex-direction:column;flex:1}
 .promo-card .promo-destino{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:.25rem}
 .promo-card h3{font-size:1.15rem;margin:0 0 .5rem}
@@ -125,4 +134,9 @@ img{max-width:100%}
 @media(max-width:991px){
   .brand-logo{height:46px}
   .brand-logo-footer{height:56px}
+}
+
+@media(max-width:767px){
+  /* Evita que "Ingresar" quede tapado por el botón flotante de WhatsApp */
+  .footer-copy{flex-direction:column;gap:.5rem;text-align:center;padding-bottom:60px}
 }
