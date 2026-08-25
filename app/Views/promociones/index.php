@@ -1,12 +1,13 @@
 <?php $content = ob_start() ?: ''; ?>
 
-<section class="container py-5">
-  <div class="section-titulo">
-    <div class="kicker">Sueña · Explora · Descubre</div>
-    <h2>Nuestras promociones</h2>
-    <div class="section-linea"></div>
+<section class="hero" style="padding:3.5rem 0">
+  <div class="container">
+    <div class="hero-eslogan">Sueña · Explora · Descubre</div>
+    <h1>Nuestras promociones</h1>
   </div>
+</section>
 
+<section class="container py-4 pb-5">
   <div class="filtros-box mb-4">
     <form method="get" class="row g-2 align-items-end">
       <div class="col-12 col-md-5">
@@ -40,6 +41,9 @@
               <img src="<?= base_url($p['imagen_portada']) ?>" alt="<?= esc($p['titulo']) ?>">
             <?php else: ?>
               <i class="bi bi-airplane"></i>
+            <?php endif ?>
+            <?php if (!empty($p['destacado_foto'])): ?>
+              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
           <div class="promo-body">

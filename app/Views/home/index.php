@@ -8,7 +8,7 @@
       </div>
       <div class="col-12 col-lg-8 text-center text-lg-start">
         <div class="hero-eslogan"><?= esc($config['eslogan'] ?? 'Sueña · Explora · Descubre') ?></div>
-        <h1><span class="hero-intro">Viajá con</span> <span class="hero-script">Silvina Jorge Viajes</span></h1>
+        <h1><span class="hero-script">Silvina Jorge Viajes</span></h1>
         <p class="lead mx-auto mx-lg-0">Asesoramiento personalizado para tu próxima escapada, con las mejores promociones a destinos nacionales e internacionales.</p>
         <a href="<?= site_url('promociones') ?>" class="btn-brand">Ver promociones</a>
       </div>
@@ -35,6 +35,9 @@
               <img src="<?= base_url($p['imagen_portada']) ?>" alt="<?= esc($p['titulo']) ?>">
             <?php else: ?>
               <i class="bi bi-airplane"></i>
+            <?php endif ?>
+            <?php if (!empty($p['destacado_foto'])): ?>
+              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
           <div class="promo-body">
