@@ -86,11 +86,7 @@
           <?php foreach ($imagenes as $img): ?>
             <div class="position-relative">
               <img src="<?= base_url($img['ruta']) ?>" style="width:100px;height:100px;object-fit:cover;border-radius:10px" alt="Foto">
-              <form method="post" action="<?= site_url('admin/promociones/imagen/eliminar/' . $img['id']) ?>"
-                    onsubmit="return confirm('¿Eliminar esta foto?')" class="position-absolute top-0 end-0 m-1">
-                <?= csrf_field() ?>
-                <button class="btn btn-sm btn-danger py-0 px-1"><i class="bi bi-x"></i></button>
-              </form>
+              <button type="submit" form="form-eliminar-img-<?= $img['id'] ?>" class="btn btn-sm btn-danger py-0 px-1 position-absolute top-0 end-0 m-1"><i class="bi bi-x"></i></button>
             </div>
           <?php endforeach ?>
         </div>
@@ -106,6 +102,16 @@
     <a href="<?= site_url('admin/promociones') ?>" class="btn btn-outline-secondary">Cancelar</a>
   </div>
 </form>
+
+<?php if ($promocion && !empty($imagenes)): ?>
+  <?php foreach ($imagenes as $img): ?>
+    <form id="form-eliminar-img-<?= $img['id'] ?>" method="post" class="d-none"
+          action="<?= site_url('admin/promociones/imagen/eliminar/' . $img['id']) ?>"
+          onsubmit="return confirm('¿Eliminar esta foto?')">
+      <?= csrf_field() ?>
+    </form>
+  <?php endforeach ?>
+<?php endif ?>
 
 <script>
 (function () {

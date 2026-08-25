@@ -61,6 +61,8 @@ img{max-width:100%}
 
 .btn-brand{background:var(--ink);border:none;color:#fff;font-weight:600;padding:.65rem 1.6rem;border-radius:50px;transition:.2s}
 .btn-brand:hover{background:var(--teal);color:#fff}
+.hero .btn-brand{background:var(--teal)}
+.hero .btn-brand:hover{background:var(--ink)}
 .btn-brand-outline{background:transparent;border:1.5px solid var(--ink);color:var(--ink);font-weight:600;padding:.6rem 1.5rem;border-radius:50px;transition:.2s}
 .btn-brand-outline:hover{background:var(--ink);color:#fff}
 
