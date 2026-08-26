@@ -1,5 +1,16 @@
 <?php $content = ob_start() ?: ''; ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+<style>
+  /* Quill solo trae etiquetas para sus 4 tamanios por defecto (small/normal/
+     large/huge); como usamos pixeles propios, sin esto el menu muestra
+     "Normal" en todas las opciones. */
+  .ql-toolbar.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+  .ql-toolbar.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+    content: attr(data-value);
+  }
+</style>
+
 <form method="post" enctype="multipart/form-data"
       action="<?= $promocion ? site_url('admin/promociones/actualizar/' . $promocion['id']) : site_url('admin/promociones/guardar') ?>">
   <?= csrf_field() ?>
@@ -49,7 +60,7 @@
         <div class="col-6 col-md-2">
           <label class="form-label small mb-1">Orden</label>
           <input type="number" name="orden" class="form-control" value="<?= esc($promocion['orden'] ?? 0) ?>">
-          <div class="form-text">Las de menor número aparecen primero (para destacarlas).</div>
+          <div class="form-text">Del 1 al 5: prioridad (1 primero) y su foto de portada rota en el fondo de Inicio. En 0: sin prioridad, aparece al final.</div>
         </div>
 
         <div class="col-12">
@@ -73,7 +84,12 @@
 
       <label class="form-label small mb-1 mt-3">Destacado en la foto</label>
       <input type="text" name="destacado_foto" class="form-control" maxlength="50" placeholder="Ej: 2x1, Últimos lugares, USD 500" value="<?= esc($promocion['destacado_foto'] ?? '') ?>">
-      <div class="form-text">Texto que aparece en la placa sobre la foto de portada. Si lo dejás vacío, se muestra el precio.</div>
+      <div class="form-text">Texto corto para la placa sobre la foto de portada. Si lo dejás vacío, se muestra el precio.</div>
+
+      <label class="form-label small mb-1 mt-3">Destacado con formato (opcional)</label>
+      <div id="editorDestacadoHtml" style="background:#fff"></div>
+      <textarea name="destacado_html" id="inputDestacadoHtml" hidden><?= $promocion['destacado_html'] ?? '' ?></textarea>
+      <div class="form-text">Texto con formato (negrita, tamaños, colores) que se superpone sobre toda la foto de portada, con un velo oscuro abajo para que se lea bien — para armar algo tipo flyer sin tener que diseñar la imagen aparte. Si completás esto, reemplaza la placa simple de arriba.</div>
     </div>
   </div>
 
@@ -178,6 +194,45 @@
       form.dataset.comprimido = '1';
       form.submit();
     });
+  });
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+(function () {
+  var contenedor = document.getElementById('editorDestacadoHtml');
+  var oculto = document.getElementById('inputDestacadoHtml');
+  if (!contenedor || !oculto) return;
+
+  // Tamanios en pixeles guardados como estilo inline (no como clase), asi
+  // se ven igual en el editor y en la home sin depender del CSS de Quill.
+  var TAMANIOS = ['12px', '14px', '16px', '18px', '20px', '24px', '28px', '36px', '48px'];
+  var SizeStyle = Quill.import('attributors/style/size');
+  SizeStyle.whitelist = TAMANIOS;
+  Quill.register(SizeStyle, true);
+
+  var quill = new Quill(contenedor, {
+    theme: 'snow',
+    placeholder: 'Ej: 2x1 en cabañas\nSalidas todos los sábados',
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline'],
+        [{ color: [] }],
+        [{ size: TAMANIOS }],
+        [{ align: [] }],
+        ['clean'],
+      ],
+    },
+  });
+
+  var htmlInicial = <?= json_encode($promocion['destacado_html'] ?? '') ?>;
+  if (htmlInicial) {
+    quill.clipboard.dangerouslyPasteHTML(htmlInicial);
+  }
+
+  quill.on('text-change', function () {
+    oculto.value = quill.getText().trim().length === 0 ? '' : quill.root.innerHTML;
   });
 })();
 </script>

@@ -8,12 +8,13 @@ class Home extends BaseController
 {
     public function index()
     {
-        $promociones = (new PromocionModel())->destacadas(3);
+        $model = new PromocionModel();
 
         return view('home/index', [
             'title'       => 'Inicio',
             'config'      => $this->config,
-            'promociones' => $promociones,
+            'promociones' => $model->destacadas(3),
+            'fotosHero'   => $model->fotosHero(),
         ]);
     }
 }

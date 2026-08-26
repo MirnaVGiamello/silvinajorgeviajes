@@ -42,7 +42,9 @@
             <?php else: ?>
               <i class="bi bi-airplane"></i>
             <?php endif ?>
-            <?php if (!empty($p['destacado_foto'])): ?>
+            <?php if (!empty($p['destacado_html'])): ?>
+              <div class="promo-destacado-html"><?= $p['destacado_html'] ?></div>
+            <?php elseif (!empty($p['destacado_foto'])): ?>
               <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
