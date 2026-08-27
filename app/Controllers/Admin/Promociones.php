@@ -8,6 +8,11 @@ use App\Models\PromocionModel;
 
 class Promociones extends BaseController
 {
+    private const TAMANO_MAXIMO_FOTO = 5 * 1024 * 1024; // 5 MB
+
+    /** @var string[] mensajes de fotos rechazadas, para avisar al usuario tras guardar */
+    private array $erroresFotos = [];
+
     private function directorioUploads(int $id): string
     {
         return FCPATH . 'uploads/promociones/' . $id;
@@ -16,6 +21,18 @@ class Promociones extends BaseController
     private function guardarImagen($archivo, int $promocionId, string $nombreBase): ?string
     {
         if (!$archivo || !$archivo->isValid() || $archivo->hasMoved()) {
+            return null;
+        }
+
+        if ($archivo->getMimeType() !== 'image/jpeg') {
+            $this->erroresFotos[] = $archivo->getClientName() . ': solo se aceptan fotos en formato JPG.';
+
+            return null;
+        }
+
+        if ($archivo->getSize() > self::TAMANO_MAXIMO_FOTO) {
+            $this->erroresFotos[] = $archivo->getClientName() . ': la foto pesa demasiado (máximo 5 MB).';
+
             return null;
         }
 
@@ -121,7 +138,9 @@ class Promociones extends BaseController
 
         $this->guardarGaleria($id);
 
-        return redirect()->to('/admin/promociones')->with('ok', 'Promoción creada correctamente.');
+        return redirect()->to('/admin/promociones')
+            ->with('ok', 'Promoción creada correctamente.')
+            ->with('error', $this->erroresFotos ? implode(' ', $this->erroresFotos) : null);
     }
 
     public function actualizar(int $id)
@@ -142,7 +161,9 @@ class Promociones extends BaseController
         $model->update($id, $datos);
         $this->guardarGaleria($id);
 
-        return redirect()->to('/admin/promociones')->with('ok', 'Promoción actualizada correctamente.');
+        return redirect()->to('/admin/promociones')
+            ->with('ok', 'Promoción actualizada correctamente.')
+            ->with('error', $this->erroresFotos ? implode(' ', $this->erroresFotos) : null);
     }
 
     private function guardarGaleria(int $promocionId): void

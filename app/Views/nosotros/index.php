@@ -2,8 +2,8 @@
 
 <section class="hero" style="padding:3.5rem 0">
   <div class="container">
-    <div class="hero-eslogan">Nosotros</div>
-    <h1>Quiénes somos</h1>
+    <div class="hero-eslogan">Sobre mí</div>
+    <h1>Quién soy</h1>
   </div>
 </section>
 
@@ -42,4 +42,4 @@
   </div>
 </section>
 
-<?php $content = ob_get_clean(); echo view('layout', ['title' => 'Nosotros', 'config' => $config, 'content' => $content]); ?>
+<?php $content = ob_get_clean(); echo view('layout', ['title' => 'Sobre mí', 'config' => $config, 'content' => $content]); ?>

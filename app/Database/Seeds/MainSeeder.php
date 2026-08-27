@@ -31,7 +31,7 @@ class MainSeeder extends Seeder
         $this->db->table('configuracion')->insert([
             'nombre_agencia' => 'Silvina Jorge Viajes',
             'eslogan'        => 'Sueña · Explora · Descubre',
-            'texto_nosotros' => 'Somos una agencia de viajes dedicada a ayudarte a planear las vacaciones que soñás. Trabajamos con destinos nacionales e internacionales, ofreciendo asesoramiento personalizado en cada paso.',
+            'texto_nosotros' => 'Soy agente de viajes y te ayudo a planear las vacaciones que soñás. Trabajo con destinos nacionales e internacionales, ofreciendo asesoramiento personalizado en cada paso.',
             'telefono'       => '',
             'whatsapp'       => '5492215699890',
             'email'          => '',

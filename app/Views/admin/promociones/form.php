@@ -27,7 +27,7 @@
         <div class="col-6 col-md-2">
           <label class="form-label small mb-1">Moneda</label>
           <select name="moneda" class="form-select">
-            <?php foreach (['ARS', 'USD'] as $m): ?>
+            <?php foreach (['ARS', 'USD', 'desde U$D'] as $m): ?>
               <option value="<?= $m ?>" <?= ($promocion['moneda'] ?? 'ARS') === $m ? 'selected' : '' ?>><?= $m ?></option>
             <?php endforeach ?>
           </select>
@@ -68,8 +68,8 @@
       <?php if (!empty($promocion['imagen_portada'])): ?>
         <div class="mb-2"><img src="<?= base_url($promocion['imagen_portada']) ?>" style="max-width:180px;border-radius:10px" alt="Portada actual"></div>
       <?php endif ?>
-      <input type="file" name="imagen_portada" class="form-control" accept="image/*" data-comprimir>
-      <div class="form-text">Se muestra en las tarjetas de promoción y en el detalle. Usá una foto horizontal (apaisada, ej. 16:9) para que se vea completa y sin recortes. Dejá vacío para no cambiarla.</div>
+      <input type="file" name="imagen_portada" class="form-control" accept="image/jpeg" data-comprimir>
+      <div class="form-text">Se muestra en las tarjetas de promoción y en el detalle. Usá una foto horizontal (apaisada, ej. 16:9) para que se vea completa y sin recortes. Dejá vacío para no cambiarla. Solo formato JPG, hasta 5 MB.</div>
 
       <label class="form-label small mb-1 mt-3">Destacado en la foto</label>
       <input type="text" name="destacado_foto" class="form-control" maxlength="50" placeholder="Ej: 2x1, Últimos lugares, USD 500" value="<?= esc($promocion['destacado_foto'] ?? '') ?>">
@@ -91,8 +91,8 @@
           <?php endforeach ?>
         </div>
       <?php endif ?>
-      <input type="file" name="galeria[]" class="form-control" accept="image/*" multiple data-comprimir>
-      <div class="form-text">Podés seleccionar varias fotos a la vez para agregarlas a la galería.</div>
+      <input type="file" name="galeria[]" class="form-control" accept="image/jpeg" multiple data-comprimir>
+      <div class="form-text">Podés seleccionar varias fotos a la vez para agregarlas a la galería. Solo formato JPG, hasta 5 MB cada una.</div>
     </div>
   </div>
   <?php endif ?>

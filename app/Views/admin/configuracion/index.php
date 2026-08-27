@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-12">
-          <label class="form-label small mb-1">Texto "Sobre nosotros"</label>
+          <label class="form-label small mb-1">Texto "Sobre mí"</label>
           <textarea name="texto_nosotros" class="form-control" rows="5"><?= esc($config['texto_nosotros'] ?? '') ?></textarea>
         </div>
 

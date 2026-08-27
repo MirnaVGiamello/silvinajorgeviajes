@@ -24,7 +24,7 @@
       <?php $u = current_url(); ?>
       <a href="<?= site_url('/') ?>" class="<?= $u === site_url('/') ? 'active' : '' ?>">Inicio</a>
       <a href="<?= site_url('promociones') ?>" class="<?= str_contains($u, 'promociones') ? 'active' : '' ?>">Promociones</a>
-      <a href="<?= site_url('nosotros') ?>" class="<?= str_contains($u, 'nosotros') ? 'active' : '' ?>">Nosotros</a>
+      <a href="<?= site_url('nosotros') ?>" class="<?= str_contains($u, 'nosotros') ? 'active' : '' ?>">Sobre mí</a>
       <a href="<?= site_url('contacto') ?>" class="<?= str_contains($u, 'contacto') ? 'active' : '' ?>">Contacto</a>
     </nav>
   </div>
@@ -32,7 +32,7 @@
   <nav class="mobile-nav d-lg-none" id="mobileNav">
     <a href="<?= site_url('/') ?>">Inicio</a>
     <a href="<?= site_url('promociones') ?>">Promociones</a>
-    <a href="<?= site_url('nosotros') ?>">Nosotros</a>
+    <a href="<?= site_url('nosotros') ?>">Sobre mí</a>
     <a href="<?= site_url('contacto') ?>">Contacto</a>
   </nav>
 </header>
@@ -61,7 +61,7 @@
       <div class="col-6 col-md-4">
         <div class="footer-titulo">Navegación</div>
         <a href="<?= site_url('promociones') ?>">Promociones</a>
-        <a href="<?= site_url('nosotros') ?>">Nosotros</a>
+        <a href="<?= site_url('nosotros') ?>">Sobre mí</a>
         <a href="<?= site_url('contacto') ?>">Contacto</a>
       </div>
       <div class="col-6 col-md-4">
