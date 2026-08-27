@@ -118,6 +118,7 @@ class Promociones extends BaseController
             'fecha_desde'    => $this->request->getPost('fecha_desde') ?: null,
             'fecha_hasta'    => $this->request->getPost('fecha_hasta') ?: null,
             'destacado_foto' => $this->request->getPost('destacado_foto') ?: null,
+            'destacado_html' => $this->request->getPost('destacado_html') ?: null,
             'activa'         => $this->request->getPost('activa') ? 1 : 0,
             'orden'          => (int) ($this->request->getPost('orden') ?: 0),
         ];

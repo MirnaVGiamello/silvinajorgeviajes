@@ -1,6 +1,37 @@
-<?php $content = ob_start() ?: ''; ?>
+<?php
+$content = ob_start() ?: '';
+
+$fotosSlideshow = array_merge(
+    [base_url('assets/img/hero-bg.webp')],
+    array_map(fn ($p) => base_url($p['imagen_portada']), $fotosHero ?? [])
+);
+$totalSlides = count($fotosSlideshow);
+$segundosPorFoto = 15;
+?>
 
 <section class="hero">
+  <div class="hero-slides">
+    <?php foreach ($fotosSlideshow as $i => $url): ?>
+      <div class="hero-slide" style="background-image:url('<?= esc($url, 'attr') ?>')<?php if ($totalSlides > 1): ?>;animation:heroFade-<?= $i ?> <?= $totalSlides * $segundosPorFoto ?>s infinite<?php endif ?>"></div>
+    <?php endforeach ?>
+  </div>
+  <?php if ($totalSlides > 1): ?>
+    <style>
+      <?php foreach ($fotosSlideshow as $i => $url):
+        $inicio       = $i / $totalSlides * 100;
+        $entrada      = ($i + 0.12) / $totalSlides * 100;
+        $salida       = ($i + 0.88) / $totalSlides * 100;
+        $fin          = ($i + 1) / $totalSlides * 100;
+      ?>
+      @keyframes heroFade-<?= $i ?> {
+        0%, <?= $inicio ?>% { opacity: 0; }
+        <?= $entrada ?>% { opacity: 1; }
+        <?= $salida ?>% { opacity: 1; }
+        <?= $fin ?>%, 100% { opacity: 0; }
+      }
+      <?php endforeach ?>
+    </style>
+  <?php endif ?>
   <div class="container">
     <div class="row align-items-center g-4 g-lg-5">
       <div class="col-12 col-lg-4 text-center">
@@ -36,7 +67,9 @@
             <?php else: ?>
               <i class="bi bi-airplane"></i>
             <?php endif ?>
-            <?php if (!empty($p['destacado_foto'])): ?>
+            <?php if (!empty($p['destacado_html'])): ?>
+              <div class="promo-destacado-html"><?= $p['destacado_html'] ?></div>
+            <?php elseif (!empty($p['destacado_foto'])): ?>
               <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
