@@ -22,6 +22,23 @@
 
         <div class="col-12"><hr class="my-1"></div>
 
+        <div class="col-12">
+          <label class="form-label small mb-1 d-block">Diseño del sitio</label>
+          <div class="d-flex gap-4">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tema_home" id="temaActual" value="actual" <?= ($config['tema_home'] ?? 'actual') === 'actual' ? 'checked' : '' ?>>
+              <label class="form-check-label small" for="temaActual">Actual</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tema_home" id="temaNueva" value="nueva" <?= ($config['tema_home'] ?? 'actual') === 'nueva' ? 'checked' : '' ?>>
+              <label class="form-check-label small" for="temaNueva">Propuesta nueva</label>
+            </div>
+          </div>
+          <div class="form-text">Cambia el diseño de Inicio, Promociones y la ficha de cada promoción. Nosotros, Contacto y el panel no se modifican.</div>
+        </div>
+
+        <div class="col-12"><hr class="my-1"></div>
+
         <div class="col-12 col-md-6">
           <label class="form-label small mb-1">WhatsApp (con código de país, ej: 5491122334455)</label>
           <input type="text" name="whatsapp" class="form-control" value="<?= esc($config['whatsapp'] ?? '') ?>">

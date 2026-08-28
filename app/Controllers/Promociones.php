@@ -15,7 +15,9 @@ class Promociones extends BaseController
             'categoria' => $this->request->getGet('categoria'),
         ];
 
-        return view('promociones/index', [
+        $vista = ($this->config['tema_home'] ?? 'actual') === 'nueva' ? 'promociones/index_nueva' : 'promociones/index';
+
+        return view($vista, [
             'title'       => 'Promociones',
             'config'      => $this->config,
             'promociones' => $model->publicas($filtros),
@@ -33,8 +35,9 @@ class Promociones extends BaseController
         }
 
         $imagenes = (new PromocionImagenModel())->dePromocion($id);
+        $vista    = ($this->config['tema_home'] ?? 'actual') === 'nueva' ? 'promociones/detalle_nueva' : 'promociones/detalle';
 
-        return view('promociones/detalle', [
+        return view($vista, [
             'title'     => $promocion['titulo'],
             'config'    => $this->config,
             'promocion' => $promocion,

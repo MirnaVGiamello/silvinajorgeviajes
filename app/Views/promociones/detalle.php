@@ -19,10 +19,14 @@
       <p class="text-muted" style="white-space:pre-line"><?= esc($promocion['descripcion']) ?></p>
 
       <?php if (!empty($imagenes)): ?>
-        <div class="galeria-mini">
-          <?php foreach ($imagenes as $img): ?>
-            <img src="<?= base_url($img['ruta']) ?>" alt="Foto de <?= esc($promocion['titulo']) ?>" class="img-ampliable" role="button">
-          <?php endforeach ?>
+        <div class="galeria-carrusel">
+          <button type="button" class="galeria-flecha galeria-flecha-izq" aria-label="Ver fotos anteriores"><i class="bi bi-chevron-left"></i></button>
+          <div class="galeria-mini">
+            <?php foreach ($imagenes as $img): ?>
+              <img src="<?= base_url($img['ruta']) ?>" alt="Foto de <?= esc($promocion['titulo']) ?>" class="img-ampliable" role="button">
+            <?php endforeach ?>
+          </div>
+          <button type="button" class="galeria-flecha galeria-flecha-der" aria-label="Ver más fotos"><i class="bi bi-chevron-right"></i></button>
         </div>
       <?php endif ?>
     </div>
@@ -77,6 +81,14 @@ document.querySelectorAll('.img-ampliable').forEach(function (img) {
     lightboxImg.alt = img.alt;
     new bootstrap.Modal(document.getElementById('lightboxModal')).show();
   });
+});
+
+document.querySelectorAll('.galeria-carrusel').forEach(function (cont) {
+  var pista = cont.querySelector('.galeria-mini');
+  var izq = cont.querySelector('.galeria-flecha-izq');
+  var der = cont.querySelector('.galeria-flecha-der');
+  if (izq) izq.addEventListener('click', function () { pista.scrollBy({ left: -240, behavior: 'smooth' }); });
+  if (der) der.addEventListener('click', function () { pista.scrollBy({ left: 240, behavior: 'smooth' }); });
 });
 </script>
 

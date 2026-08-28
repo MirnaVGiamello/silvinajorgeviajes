@@ -29,6 +29,7 @@ class Configuracion extends BaseController
             'direccion'      => $this->request->getPost('direccion'),
             'instagram'      => $this->request->getPost('instagram'),
             'facebook'       => $this->request->getPost('facebook'),
+            'tema_home'      => $this->request->getPost('tema_home') === 'nueva' ? 'nueva' : 'actual',
             'updated_at'     => date('Y-m-d H:i:s'),
         ]);
 
