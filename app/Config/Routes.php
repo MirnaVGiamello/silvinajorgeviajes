@@ -45,4 +45,8 @@ $routes->group('admin', ['filter' => 'admin'], function ($routes) {
 
     $routes->get( 'configuracion',   'Admin\Configuracion::index');
     $routes->post('configuracion',   'Admin\Configuracion::guardar');
+
+    $routes->get( 'categorias',                 'Admin\Categorias::index');
+    $routes->post('categorias/guardar',         'Admin\Categorias::guardar');
+    $routes->post('categorias/eliminar/(:num)', 'Admin\Categorias::eliminar/$1');
 });

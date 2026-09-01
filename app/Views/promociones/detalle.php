@@ -15,7 +15,11 @@
     <div class="col-12 col-lg-8">
       <div class="promo-destino mb-1"><?= esc($promocion['destino']) ?></div>
       <h1><?= esc($promocion['titulo']) ?></h1>
-      <span class="badge-categoria mb-3 d-inline-block"><?= esc($promocion['categoria']) ?></span>
+      <div class="d-flex flex-wrap gap-1 mb-3">
+        <?php foreach ($promocion['categorias'] as $c): ?>
+          <span class="badge-categoria d-inline-block"><?= esc($c['nombre']) ?></span>
+        <?php endforeach ?>
+      </div>
       <p class="text-muted" style="white-space:pre-line"><?= esc($promocion['descripcion']) ?></p>
 
       <?php if (!empty($imagenes)): ?>

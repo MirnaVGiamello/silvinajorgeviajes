@@ -16,10 +16,10 @@
     </div>
     <div class="col-8 col-md-5">
       <label for="fCategoria">Categoría</label>
-      <select id="fCategoria" name="categoria" class="form-select">
+      <select id="fCategoria" name="categoria_id" class="form-select">
         <option value="">Todas</option>
         <?php foreach ($categorias as $c): ?>
-          <option value="<?= esc($c) ?>" <?= ($filtros['categoria'] ?? '') === $c ? 'selected' : '' ?>><?= esc($c) ?></option>
+          <option value="<?= $c['id'] ?>" <?= (int) ($filtros['categoria_id'] ?? 0) === $c['id'] ? 'selected' : '' ?>><?= esc($c['nombre']) ?> (<?= (int) $c['cantidad'] ?>)</option>
         <?php endforeach ?>
       </select>
     </div>

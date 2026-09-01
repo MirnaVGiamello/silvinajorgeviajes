@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\ConfiguracionModel;
+use App\Models\PromocionModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -17,5 +18,6 @@ abstract class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         $this->config = (new ConfiguracionModel())->actual();
+        (new PromocionModel())->desactivarVencidas();
     }
 }

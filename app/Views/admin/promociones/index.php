@@ -1,4 +1,22 @@
-<?php $content = ob_start() ?: ''; ?>
+<?php
+$content = ob_start() ?: '';
+
+$urlOrden = function (string $columna) use ($ordenPor, $direccion) {
+    $nuevaDireccion = ($ordenPor === $columna && $direccion === 'ASC') ? 'desc' : 'asc';
+
+    return site_url('admin/promociones') . '?orden=' . $columna . '&dir=' . $nuevaDireccion;
+};
+$flechaOrden = function (string $columna) use ($ordenPor, $direccion) {
+    if ($ordenPor !== $columna) {
+        return '';
+    }
+
+    return $direccion === 'ASC' ? ' <i class="bi bi-caret-up-fill"></i>' : ' <i class="bi bi-caret-down-fill"></i>';
+};
+$th = function (string $columna, string $etiqueta) use ($urlOrden, $flechaOrden) {
+    return '<a href="' . $urlOrden($columna) . '" class="text-dark text-decoration-none">' . esc($etiqueta) . $flechaOrden($columna) . '</a>';
+};
+?>
 
 <div class="d-flex justify-content-end mb-3">
   <a href="<?= site_url('admin/promociones/nueva') ?>" class="btn btn-sm btn-brand"><i class="bi bi-plus-lg me-1"></i>Nueva promoción</a>
@@ -8,16 +26,34 @@
   <div class="table-responsive">
     <table class="table table-hover mb-0 small align-middle">
       <thead class="table-light">
-        <tr><th>ID</th><th class="text-center">Orden</th><th>Título</th><th>Destino</th><th>Categoría</th><th class="text-end">Precio</th><th class="text-center">Estado</th><th></th></tr>
+        <tr>
+          <th><?= $th('id', 'ID') ?></th>
+          <th class="text-center"><?= $th('orden', 'Orden') ?></th>
+          <th><?= $th('titulo', 'Título') ?></th>
+          <th><?= $th('destino', 'Destino') ?></th>
+          <th>Categoría</th>
+          <th><?= $th('fecha_desde', 'Vigencia') ?></th>
+          <th class="text-end"><?= $th('precio', 'Precio') ?></th>
+          <th class="text-center"><?= $th('activa', 'Estado') ?></th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
-        <?php foreach ($promociones as $p): ?>
-        <tr>
+        <?php foreach ($promociones as $p):
+          $vencida = !empty($p['fecha_hasta']) && strtotime($p['fecha_hasta']) < strtotime('today');
+        ?>
+        <tr class="<?= $vencida ? 'table-danger' : '' ?>">
           <td><?= $p['id'] ?></td>
           <td class="text-center"><?= (int) $p['orden'] ?></td>
           <td><?= esc($p['titulo']) ?></td>
           <td><?= esc($p['destino']) ?></td>
-          <td><?= esc($p['categoria']) ?></td>
+          <td><?= esc(implode(', ', array_column($p['categorias'], 'nombre'))) ?></td>
+          <td class="text-nowrap">
+            <?php if (!empty($p['fecha_desde']) || !empty($p['fecha_hasta'])): ?>
+              <?= !empty($p['fecha_desde']) ? esc(date('d/m/Y', strtotime($p['fecha_desde']))) : '?' ?>
+              <?php if (!empty($p['fecha_hasta'])): ?> al <?= esc(date('d/m/Y', strtotime($p['fecha_hasta']))) ?><?php endif ?>
+            <?php else: ?>-<?php endif ?>
+          </td>
           <td class="text-end"><?= $p['precio'] ? esc($p['moneda']) . ' ' . number_format($p['precio'], 0) : '-' ?></td>
           <td class="text-center">
             <?= $p['activa'] ? '<span class="badge bg-success">Activa</span>' : '<span class="badge bg-secondary">Oculta</span>' ?>
@@ -34,7 +70,7 @@
         </tr>
         <?php endforeach ?>
         <?php if (empty($promociones)): ?>
-        <tr><td colspan="7" class="text-center text-muted py-4">Todavía no hay promociones cargadas.</td></tr>
+        <tr><td colspan="9" class="text-center text-muted py-4">Todavía no hay promociones cargadas.</td></tr>
         <?php endif ?>
       </tbody>
     </table>

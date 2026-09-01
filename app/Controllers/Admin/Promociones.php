@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\CategoriaModel;
 use App\Models\PromocionImagenModel;
 use App\Models\PromocionModel;
 
@@ -70,39 +71,52 @@ class Promociones extends BaseController
         }
     }
 
+    private const COLUMNAS_ORDENABLES = ['id', 'orden', 'titulo', 'destino', 'precio', 'activa', 'fecha_desde'];
+
     public function index()
     {
         $model = new PromocionModel();
 
+        $ordenPor  = $this->request->getGet('orden');
+        $ordenPor  = in_array($ordenPor, self::COLUMNAS_ORDENABLES, true) ? $ordenPor : 'id';
+        $direccion = strtolower((string) $this->request->getGet('dir')) === 'asc' ? 'ASC' : 'DESC';
+
         return view('admin/promociones/index', [
             'title'       => 'Promociones',
             'config'      => $this->config,
-            'promociones' => $model->orderBy('orden', 'ASC')->orderBy('created_at', 'DESC')->findAll(),
+            'promociones' => $model->adjuntarCategorias($model->orderBy($ordenPor, $direccion)->findAll()),
+            'ordenPor'    => $ordenPor,
+            'direccion'   => $direccion,
         ]);
     }
 
     public function nueva()
     {
         return view('admin/promociones/form', [
-            'title'      => 'Nueva promoción',
-            'config'     => $this->config,
-            'promocion'  => null,
-            'imagenes'   => [],
+            'title'            => 'Nueva promoción',
+            'config'           => $this->config,
+            'promocion'        => null,
+            'imagenes'         => [],
+            'categorias'       => (new CategoriaModel())->todas(),
+            'categoriasElegidas' => [],
         ]);
     }
 
     public function editar(int $id)
     {
-        $promocion = (new PromocionModel())->find($id);
+        $model     = new PromocionModel();
+        $promocion = $model->find($id);
         if (!$promocion) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException();
         }
 
         return view('admin/promociones/form', [
-            'title'     => 'Editar promoción',
-            'config'    => $this->config,
-            'promocion' => $promocion,
-            'imagenes'  => (new PromocionImagenModel())->dePromocion($id),
+            'title'              => 'Editar promoción',
+            'config'             => $this->config,
+            'promocion'          => $promocion,
+            'imagenes'           => (new PromocionImagenModel())->dePromocion($id),
+            'categorias'         => (new CategoriaModel())->todas(),
+            'categoriasElegidas' => $model->categoriaIdsDe($id),
         ]);
     }
 
@@ -111,7 +125,6 @@ class Promociones extends BaseController
         return [
             'titulo'         => $this->request->getPost('titulo'),
             'destino'        => $this->request->getPost('destino'),
-            'categoria'      => $this->request->getPost('categoria'),
             'descripcion'    => $this->request->getPost('descripcion'),
             'precio'         => $this->request->getPost('precio') !== '' ? $this->request->getPost('precio') : null,
             'moneda'         => $this->request->getPost('moneda') ?: 'ARS',
@@ -131,6 +144,7 @@ class Promociones extends BaseController
         $datos['usuario_id'] = session()->get('usuario_id');
 
         $id = $model->insert($datos);
+        $model->sincronizarCategorias($id, $this->request->getPost('categorias') ?? []);
 
         $portada = $this->guardarImagen($this->request->getFile('imagen_portada'), $id, 'portada');
         if ($portada) {
@@ -160,6 +174,7 @@ class Promociones extends BaseController
         }
 
         $model->update($id, $datos);
+        $model->sincronizarCategorias($id, $this->request->getPost('categorias') ?? []);
         $this->guardarGaleria($id);
 
         return redirect()->to('/admin/promociones')

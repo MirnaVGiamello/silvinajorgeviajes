@@ -27,10 +27,6 @@
           <input type="text" name="destino" class="form-control" required placeholder="Ej: Brasil" value="<?= esc($promocion['destino'] ?? '') ?>">
         </div>
 
-        <div class="col-12 col-md-4">
-          <label class="form-label small mb-1">Categoría</label>
-          <input type="text" name="categoria" class="form-control" placeholder="Ej: Playa, Aventura, Cultural" value="<?= esc($promocion['categoria'] ?? '') ?>">
-        </div>
         <div class="col-6 col-md-2">
           <label class="form-label small mb-1">Precio</label>
           <input type="number" step="0.01" name="precio" class="form-control" value="<?= esc($promocion['precio'] ?? '') ?>">
@@ -55,6 +51,32 @@
         <div class="col-12">
           <label class="form-label small mb-1">Descripción</label>
           <textarea name="descripcion" class="form-control" rows="4"><?= esc($promocion['descripcion'] ?? '') ?></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label small mb-1 d-block">Categorías</label>
+          <?php $esAdmin = session()->get('perfil') === 'admin'; ?>
+          <?php if (empty($categorias)): ?>
+            <div class="form-text mb-0">
+              Todavía no hay categorías cargadas.
+              <?php if ($esAdmin): ?>Creá alguna en <a href="<?= site_url('admin/categorias') ?>" target="_blank">Categorías</a>.<?php else: ?>Pedile a un administrador que cargue alguna.<?php endif ?>
+            </div>
+          <?php else: ?>
+            <div class="d-flex flex-wrap gap-3">
+              <?php foreach ($categorias as $c): ?>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="categorias[]" value="<?= $c['id'] ?>" id="cat<?= $c['id'] ?>"
+                         <?= in_array($c['id'], $categoriasElegidas ?? []) ? 'checked' : '' ?>>
+                  <label class="form-check-label small" for="cat<?= $c['id'] ?>"><?= esc($c['nombre']) ?></label>
+                </div>
+              <?php endforeach ?>
+            </div>
+            <?php if ($esAdmin): ?>
+              <div class="form-text">Podés elegir más de una. Se administran en <a href="<?= site_url('admin/categorias') ?>" target="_blank">Categorías</a>.</div>
+            <?php else: ?>
+              <div class="form-text">Podés elegir más de una.</div>
+            <?php endif ?>
+          <?php endif ?>
         </div>
 
         <div class="col-6 col-md-2">
@@ -89,7 +111,7 @@
       <label class="form-label small mb-1 mt-3">Destacado con formato (opcional)</label>
       <div id="editorDestacadoHtml" style="background:#fff"></div>
       <textarea name="destacado_html" id="inputDestacadoHtml" hidden><?= $promocion['destacado_html'] ?? '' ?></textarea>
-      <div class="form-text">Texto con formato (negrita, tamaños, colores) que se superpone sobre toda la foto de portada, con un velo oscuro abajo para que se lea bien — para armar algo tipo flyer sin tener que diseñar la imagen aparte. Si completás esto, reemplaza la placa simple de arriba.</div>
+      <div class="form-text">Texto con formato (negrita, tamaños, colores) que se superpone sobre toda la foto de portada, con un velo oscuro abajo para que se lea bien — para armar algo tipo flyer sin tener que diseñar la imagen aparte. Podés usarlo junto con la placa de arriba: la placa queda arriba a la derecha y este texto abajo.</div>
     </div>
   </div>
 

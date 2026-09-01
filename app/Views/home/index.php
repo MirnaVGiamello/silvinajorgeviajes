@@ -67,10 +67,11 @@ $segundosPorFoto = 15;
             <?php else: ?>
               <i class="bi bi-airplane"></i>
             <?php endif ?>
+            <?php if (!empty($p['destacado_foto'])): ?>
+              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
+            <?php endif ?>
             <?php if (!empty($p['destacado_html'])): ?>
               <div class="promo-destacado-html"><?= $p['destacado_html'] ?></div>
-            <?php elseif (!empty($p['destacado_foto'])): ?>
-              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
           <div class="promo-body">
@@ -81,7 +82,11 @@ $segundosPorFoto = 15;
               <?php if ($p['precio']): ?>
                 <span class="promo-precio"><?= esc($p['moneda']) ?> <?= number_format($p['precio'], 0) ?></span>
               <?php else: ?><span></span><?php endif ?>
-              <span class="badge-categoria"><?= esc($p['categoria']) ?></span>
+              <div class="d-flex flex-wrap gap-1 justify-content-end">
+                <?php foreach ($p['categorias'] as $c): ?>
+                  <span class="badge-categoria"><?= esc($c['nombre']) ?></span>
+                <?php endforeach ?>
+              </div>
             </div>
           </div>
         </a>

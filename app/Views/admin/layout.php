@@ -64,6 +64,7 @@
         <hr style="border-color:rgba(255,255,255,.1);margin:8px 16px">
         <div style="color:rgba(255,255,255,.3);font-size:.68rem;letter-spacing:.1em;padding:4px 16px 2px">ADMINISTRACIÓN</div>
         <a href="<?= site_url('admin/usuarios') ?>" class="nav-link <?= str_contains($u, 'usuarios') ? 'active' : '' ?>"><i class="bi bi-people"></i> Usuarios</a>
+        <a href="<?= site_url('admin/categorias') ?>" class="nav-link <?= str_contains($u, 'categorias') ? 'active' : '' ?>"><i class="bi bi-tags"></i> Categorías</a>
         <a href="<?= site_url('admin/configuracion') ?>" class="nav-link <?= str_contains($u, 'configuracion') ? 'active' : '' ?>"><i class="bi bi-gear"></i> Configuración</a>
       <?php endif ?>
 

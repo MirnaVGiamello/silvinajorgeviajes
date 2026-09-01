@@ -15,7 +15,11 @@
     <div>
       <div class="n-detalle-destino"><?= esc($promocion['destino']) ?></div>
       <h1 class="n-detalle-titulo"><?= esc($promocion['titulo']) ?></h1>
-      <span class="n-cat mb-3 d-inline-block"><?= esc(strtoupper($promocion['categoria'])) ?></span>
+      <div class="d-flex flex-wrap gap-1 mb-3">
+        <?php foreach ($promocion['categorias'] as $c): ?>
+          <span class="n-cat d-inline-block"><?= esc(strtoupper($c['nombre'])) ?></span>
+        <?php endforeach ?>
+      </div>
       <p class="n-detalle-desc"><?= esc($promocion['descripcion']) ?></p>
 
       <?php if (!empty($imagenes)): ?>

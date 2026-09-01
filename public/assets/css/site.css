@@ -117,7 +117,7 @@ img{max-width:100%}
 /* ---------- Detalle ---------- */
 .detalle-hero{aspect-ratio:16/7;background:linear-gradient(135deg,var(--lilac-soft),var(--cream));border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--lilac);font-size:3rem}
 .detalle-hero img{width:100%;height:100%;object-fit:cover}
-.galeria-carrusel{position:relative;margin-top:1rem}
+.galeria-carrusel{position:relative;margin-top:1rem;min-width:0}
 .galeria-mini{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:.5rem;-webkit-overflow-scrolling:touch}
 .galeria-mini img{flex:0 0 220px;width:220px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;scroll-snap-align:start}
 .galeria-flecha{

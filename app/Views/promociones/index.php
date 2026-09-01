@@ -16,10 +16,10 @@
       </div>
       <div class="col-8 col-md-5">
         <label class="form-label small mb-1">Categoría</label>
-        <select name="categoria" class="form-select">
+        <select name="categoria_id" class="form-select">
           <option value="">Todas</option>
           <?php foreach ($categorias as $c): ?>
-            <option value="<?= esc($c) ?>" <?= ($filtros['categoria'] ?? '') === $c ? 'selected' : '' ?>><?= esc($c) ?></option>
+            <option value="<?= $c['id'] ?>" <?= (int) ($filtros['categoria_id'] ?? 0) === $c['id'] ? 'selected' : '' ?>><?= esc($c['nombre']) ?> (<?= (int) $c['cantidad'] ?>)</option>
           <?php endforeach ?>
         </select>
       </div>
@@ -42,10 +42,11 @@
             <?php else: ?>
               <i class="bi bi-airplane"></i>
             <?php endif ?>
+            <?php if (!empty($p['destacado_foto'])): ?>
+              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
+            <?php endif ?>
             <?php if (!empty($p['destacado_html'])): ?>
               <div class="promo-destacado-html"><?= $p['destacado_html'] ?></div>
-            <?php elseif (!empty($p['destacado_foto'])): ?>
-              <span class="promo-precio-badge"><?= esc($p['destacado_foto']) ?></span>
             <?php endif ?>
           </div>
           <div class="promo-body">
@@ -56,7 +57,11 @@
               <?php if ($p['precio']): ?>
                 <span class="promo-precio"><?= esc($p['moneda']) ?> <?= number_format($p['precio'], 0) ?></span>
               <?php else: ?><span></span><?php endif ?>
-              <span class="badge-categoria"><?= esc($p['categoria']) ?></span>
+              <div class="d-flex flex-wrap gap-1 justify-content-end">
+                <?php foreach ($p['categorias'] as $c): ?>
+                  <span class="badge-categoria"><?= esc($c['nombre']) ?></span>
+                <?php endforeach ?>
+              </div>
             </div>
           </div>
         </a>
