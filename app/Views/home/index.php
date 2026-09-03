@@ -77,7 +77,7 @@ $segundosPorFoto = 15;
           <div class="promo-body">
             <div class="promo-destino"><?= esc($p['destino']) ?></div>
             <h3><?= esc($p['titulo']) ?></h3>
-            <p><?= esc(mb_strimwidth($p['descripcion'], 0, 110, '…')) ?></p>
+            <p><?= esc(mb_strimwidth(strip_tags($p['descripcion']), 0, 110, '…')) ?></p>
             <div class="promo-footer">
               <?php if ($p['precio']): ?>
                 <span class="promo-precio"><?= esc($p['moneda']) ?> <?= number_format($p['precio'], 0) ?></span>
@@ -108,7 +108,13 @@ $segundosPorFoto = 15;
       <a href="<?= site_url('nosotros') ?>" class="btn-brand-outline">Conoceme</a>
     </div>
     <div class="col-12 col-md-6">
-      <div class="detalle-hero"><i class="bi bi-globe-americas"></i></div>
+      <div class="detalle-hero">
+        <?php if (!empty($config['foto_nosotros'])): ?>
+          <img src="<?= base_url($config['foto_nosotros']) ?>" alt="">
+        <?php else: ?>
+          <i class="bi bi-globe-americas"></i>
+        <?php endif ?>
+      </div>
     </div>
   </div>
 </section>

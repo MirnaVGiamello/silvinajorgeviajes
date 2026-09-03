@@ -10,7 +10,13 @@
 <section class="container py-4 pb-5">
   <div class="row g-4 align-items-center">
     <div class="col-12 col-lg-6">
-      <div class="detalle-hero"><i class="bi bi-suitcase-lg"></i></div>
+      <div class="detalle-hero">
+        <?php if (!empty($config['foto_nosotros'])): ?>
+          <img src="<?= base_url($config['foto_nosotros']) ?>" alt="">
+        <?php else: ?>
+          <i class="bi bi-suitcase-lg"></i>
+        <?php endif ?>
+      </div>
     </div>
     <div class="col-12 col-lg-6">
       <p class="fs-5" style="white-space:pre-line"><?= esc($config['texto_nosotros'] ?? '') ?></p>

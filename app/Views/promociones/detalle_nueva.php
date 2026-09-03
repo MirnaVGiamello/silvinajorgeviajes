@@ -20,7 +20,7 @@
           <span class="n-cat d-inline-block"><?= esc(strtoupper($c['nombre'])) ?></span>
         <?php endforeach ?>
       </div>
-      <p class="n-detalle-desc"><?= esc($promocion['descripcion']) ?></p>
+      <div class="n-detalle-desc"><?= $promocion['descripcion'] ?></div>
 
       <?php if (!empty($imagenes)): ?>
         <div class="n-galeria-carrusel">

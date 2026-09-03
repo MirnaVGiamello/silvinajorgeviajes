@@ -6,8 +6,10 @@ class Nosotros extends BaseController
 {
     public function index()
     {
-        return view('nosotros/index', [
-            'title'  => 'Nosotros',
+        $vista = ($this->config['tema_home'] ?? 'actual') === 'nueva' ? 'nosotros/index_nueva' : 'nosotros/index';
+
+        return view($vista, [
+            'title'  => 'Sobre mí',
             'config' => $this->config,
         ]);
     }

@@ -20,7 +20,7 @@
           <span class="badge-categoria d-inline-block"><?= esc($c['nombre']) ?></span>
         <?php endforeach ?>
       </div>
-      <p class="text-muted" style="white-space:pre-line"><?= esc($promocion['descripcion']) ?></p>
+      <div class="text-muted promo-descripcion"><?= $promocion['descripcion'] ?></div>
 
       <?php if (!empty($imagenes)): ?>
         <div class="galeria-carrusel">

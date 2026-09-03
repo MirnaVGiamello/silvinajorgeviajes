@@ -52,7 +52,7 @@
           <div class="promo-body">
             <div class="promo-destino"><?= esc($p['destino']) ?></div>
             <h3><?= esc($p['titulo']) ?></h3>
-            <p><?= esc(mb_strimwidth($p['descripcion'], 0, 110, '…')) ?></p>
+            <p><?= esc(mb_strimwidth(strip_tags($p['descripcion']), 0, 110, '…')) ?></p>
             <div class="promo-footer">
               <?php if ($p['precio']): ?>
                 <span class="promo-precio"><?= esc($p['moneda']) ?> <?= number_format($p['precio'], 0) ?></span>

@@ -12,7 +12,7 @@ class Home extends BaseController
         $datos = [
             'title'       => 'Inicio',
             'config'      => $this->config,
-            'promociones' => $model->destacadas(3),
+            'promociones' => $model->destacadas(6),
             'fotosHero'   => $model->fotosHero(),
         ];
 

@@ -132,6 +132,10 @@ img{max-width:100%}
 .img-ampliable{cursor:zoom-in;transition:opacity .2s}
 .img-ampliable:hover{opacity:.85}
 
+.promo-descripcion p,.promo-descripcion ul,.promo-descripcion ol{margin:0 0 1rem}
+.promo-descripcion ul,.promo-descripcion ol{padding-left:1.3rem}
+.promo-descripcion p:last-child,.promo-descripcion ul:last-child,.promo-descripcion ol:last-child{margin-bottom:0}
+
 .btn-whatsapp-consultar{
   display:flex;align-items:center;justify-content:center;
   width:64px;height:64px;border-radius:50%;margin:0 auto;

@@ -6,7 +6,9 @@ class Contacto extends BaseController
 {
     public function index()
     {
-        return view('contacto/index', [
+        $vista = ($this->config['tema_home'] ?? 'actual') === 'nueva' ? 'contacto/index_nueva' : 'contacto/index';
+
+        return view($vista, [
             'title'  => 'Contacto',
             'config' => $this->config,
         ]);

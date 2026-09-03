@@ -12,7 +12,7 @@ class Promociones extends BaseController
     private const TAMANO_MAXIMO_FOTO = 5 * 1024 * 1024; // 5 MB
 
     /** @var string[] mensajes de fotos rechazadas, para avisar al usuario tras guardar */
-    private array $erroresFotos = [];
+    private array $avisos = [];
 
     private function directorioUploads(int $id): string
     {
@@ -26,13 +26,13 @@ class Promociones extends BaseController
         }
 
         if ($archivo->getMimeType() !== 'image/jpeg') {
-            $this->erroresFotos[] = $archivo->getClientName() . ': solo se aceptan fotos en formato JPG.';
+            $this->avisos[] = $archivo->getClientName() . ': solo se aceptan fotos en formato JPG.';
 
             return null;
         }
 
         if ($archivo->getSize() > self::TAMANO_MAXIMO_FOTO) {
-            $this->erroresFotos[] = $archivo->getClientName() . ': la foto pesa demasiado (máximo 5 MB).';
+            $this->avisos[] = $archivo->getClientName() . ': la foto pesa demasiado (máximo 5 MB).';
 
             return null;
         }
@@ -122,6 +122,14 @@ class Promociones extends BaseController
 
     private function datosFormulario(): array
     {
+        $fechaHasta = $this->request->getPost('fecha_hasta') ?: null;
+        $activa     = $this->request->getPost('activa') ? 1 : 0;
+
+        if ($activa && $fechaHasta && $fechaHasta < date('Y-m-d')) {
+            $activa = 0;
+            $this->avisos[] = 'La vigencia de esta promoción venció el ' . date('d/m/Y', strtotime($fechaHasta)) . ', así que se guardó como "Oculta". Actualizá "Vigencia hasta" a una fecha futura para poder activarla.';
+        }
+
         return [
             'titulo'         => $this->request->getPost('titulo'),
             'destino'        => $this->request->getPost('destino'),
@@ -129,10 +137,10 @@ class Promociones extends BaseController
             'precio'         => $this->request->getPost('precio') !== '' ? $this->request->getPost('precio') : null,
             'moneda'         => $this->request->getPost('moneda') ?: 'ARS',
             'fecha_desde'    => $this->request->getPost('fecha_desde') ?: null,
-            'fecha_hasta'    => $this->request->getPost('fecha_hasta') ?: null,
+            'fecha_hasta'    => $fechaHasta,
             'destacado_foto' => $this->request->getPost('destacado_foto') ?: null,
             'destacado_html' => $this->request->getPost('destacado_html') ?: null,
-            'activa'         => $this->request->getPost('activa') ? 1 : 0,
+            'activa'         => $activa,
             'orden'          => (int) ($this->request->getPost('orden') ?: 0),
         ];
     }
@@ -155,7 +163,7 @@ class Promociones extends BaseController
 
         return redirect()->to('/admin/promociones')
             ->with('ok', 'Promoción creada correctamente.')
-            ->with('error', $this->erroresFotos ? implode(' ', $this->erroresFotos) : null);
+            ->with('error', $this->avisos ? implode(' ', $this->avisos) : null);
     }
 
     public function actualizar(int $id)
@@ -179,7 +187,7 @@ class Promociones extends BaseController
 
         return redirect()->to('/admin/promociones')
             ->with('ok', 'Promoción actualizada correctamente.')
-            ->with('error', $this->erroresFotos ? implode(' ', $this->erroresFotos) : null);
+            ->with('error', $this->avisos ? implode(' ', $this->avisos) : null);
     }
 
     private function guardarGaleria(int $promocionId): void

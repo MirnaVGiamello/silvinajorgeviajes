@@ -85,7 +85,7 @@ $segundosPorFoto = 15;
     <a href="<?= site_url('nosotros') ?>" class="n-btn-outline">Conoceme</a>
   </div>
   <div class="n-sobre-photo">
-    <img src="<?= base_url('assets/img/hero-bg.webp') ?>" alt="">
+    <img src="<?= base_url(!empty($config['foto_nosotros']) ? $config['foto_nosotros'] : 'assets/img/hero-bg.webp') ?>" alt="">
   </div>
 </section>
 
